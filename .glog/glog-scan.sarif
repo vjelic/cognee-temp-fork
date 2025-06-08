@@ -1,0 +1,375 @@
+{
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Glog.AI",
+          "organization": "Glog.AI",
+          "fullName": "Glog, Making software more secure",
+          "version": "1.0.0",
+          "semanticVersion": "1.0.0",
+          "informationUri": "https://www.glog.ai",
+          "rules": [
+            {
+              "id": "glog-c1e9da57-1e05-48b3-9f80-e429cf0badce",
+              "help": {
+                "text": "",
+                "markdown": "### Description\n\nThe \"Potential Attachment to All Interfaces\" vulnerability occurs when a server is configured to listen on all network interfaces, which can expose the service to the entire internet. This can lead to unauthorized access if the service is not properly secured. In the provided Python code, the default host is set to `\"0.0.0.0\"`, which means the server will accept connections from any network interface.\n\n### General Mitigation Advice\n\nTo mitigate this vulnerability, configure the server to listen only on specific, trusted network interfaces. This can be done by changing the host parameter to a more restrictive value, such as `\"127.0.0.1\"` for local-only access or a specific IP address for a particular network interface.\n\n### Source Code Fix Recommendation\n\n```python\ndef start_api_server(host: str = \"127.0.0.1\", port: int = 8000):\n    # Your server initialization code here\n    pass\n```\n\n### Library Dependencies\n\nThe code example provided does not include any specific library dependencies. However, if you are using a web framework or server library, you may need to include dependencies such as:\n\n- `Flask` for a simple web server: `pip install Flask`\n- `FastAPI` for a modern, fast web framework: `pip install fastapi uvicorn`\n- `Django` for a full-featured web framework: `pip install Django`\n\n### Relevant OWASP Resources\n\n- [OWASP Top Ten](https://owasp.org/www-project-top-ten/)\n- [OWASP Secure Coding Practices](https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/)\n\n### Common Weakness Enumeration (CWE)\n\n- [CWE-200: Exposure of Sensitive Information to an Unauthorized Actor](https://cwe.mitre.org/data/definitions/200.html)\n- [CWE-284: Improper Access Control](https://cwe.mitre.org/data/definitions/284.html)"
+              },
+              "properties": {
+                "tags": [
+                  "B104"
+                ]
+              }
+            },
+            {
+              "id": "glog-88893d5e-579b-4794-b17e-02a5dba05246",
+              "help": {
+                "text": "",
+                "markdown": "### Description\n\nThe vulnerability \"Security Concern: Use of subprocess call with shell=True Detected\" in Python arises when the `subprocess.Popen()` function is used with the `shell=True` argument. This can lead to security risks such as shell injection, where an attacker can execute arbitrary commands on the host system. This is particularly dangerous if user input is passed to the command being executed, as it can allow an attacker to execute malicious commands.\n\n### General Mitigation Advice\n\nTo mitigate this vulnerability, avoid using `shell=True` unless absolutely necessary. Instead, pass the command and its arguments as a list. This approach does not invoke the shell and is therefore not susceptible to shell injection attacks.\n\n### Source Code Fix Recommendation\n\n**Vulnerable Code:**\n\n```python\nimport subprocess\n\ncmd = \"ls -l\"\nsubprocess.Popen(cmd, shell=True)\n```\n\n**Fixed Code:**\n\n```python\nimport subprocess\n\ncmd = [\"ls\", \"-l\"]\nsubprocess.Popen(cmd)\n```\n\n### Library Dependencies\n\nThe code example provided requires the following standard library:\n\n- `subprocess`: This is a standard library in Python and does not require any additional installation.\n\n### Relevant OWASP Resources\n\n- [OWASP Command Injection](https://owasp.org/www-community/attacks/Command_Injection)\n- [OWASP Top Ten](https://owasp.org/www-project-top-ten/)\n\n### Common Weakness Enumeration (CWE)\n\n- [CWE-78: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')](https://cwe.mitre.org/data/definitions/78.html)"
+              },
+              "properties": {
+                "tags": [
+                  "B602"
+                ]
+              }
+            },
+            {
+              "id": "glog-c1b48acc-b3c9-4ef7-96a9-f4e55ef7a33e",
+              "help": {
+                "text": "",
+                "markdown": "### Description\n\nThe vulnerability arises from the use of the MD5 hashing algorithm for security purposes. MD5 is considered cryptographically broken and unsuitable for further use due to its vulnerability to collision attacks. In Python, the `hashlib` library provides a way to use MD5, but it is recommended to set `usedforsecurity=False` when using MD5 for non-security purposes to avoid misuse in security contexts.\n\n### General Mitigation Advice\n\n1. **Avoid Using MD5 for Security**: Replace MD5 with a more secure hashing algorithm such as SHA-256 or SHA-3.\n2. **Use `usedforsecurity=False`**: If MD5 must be used for non-security purposes, ensure that it is explicitly marked as not used for security.\n3. **Regularly Update Dependencies**: Keep your Python environment and libraries up to date to benefit from security patches and improvements.\n\n### Source Code Fix Recommendation\n\nReplace the use of MD5 with a more secure hashing algorithm like SHA-256. Here is the updated code:\n\n```python\nimport hashlib\n\ndef secure_hash(encoded_text):\n    return hashlib.sha256(encoded_text).hexdigest()\n```\n\n### Library Dependencies\n\nTo execute the code example properly, the following library is required:\n\n- `hashlib`: This is a built-in library in Python, so no additional installation is necessary.\n\n### Relevant OWASP Resources\n\n- [OWASP Cryptographic Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html)\n- [OWASP Top Ten 2021](https://owasp.org/Top10/)\n\n### Common Weakness Enumeration (CWE)\n\n- [CWE-327: Use of a Broken or Risky Cryptographic Algorithm](https://cwe.mitre.org/data/definitions/327.html)"
+              },
+              "properties": {
+                "tags": [
+                  "B324"
+                ]
+              }
+            },
+            {
+              "id": "glog-eb4f4bad-fafb-4271-a705-be6c4fc751ea",
+              "help": {
+                "text": "",
+                "markdown": "### Description\n\nThe vulnerability arises from the use of the MD5 hashing algorithm for security purposes. MD5 is considered weak due to its susceptibility to collision attacks, where two different inputs produce the same hash output. This makes it unsuitable for cryptographic security, such as password hashing or digital signatures. In Python, the `hashlib` library provides a way to use MD5, but it should be explicitly marked as not used for security purposes by setting `usedforsecurity=False` when using it in contexts where security is a concern.\n\n### General Mitigation Advice\n\n1. **Avoid MD5 for Security**: Do not use MD5 for any security-related purposes. Instead, use stronger hashing algorithms like SHA-256 or SHA-3.\n2. **Use `usedforsecurity=False`**: If you must use MD5 for non-security purposes, ensure that it is explicitly marked as not used for security.\n3. **Regularly Update Dependencies**: Keep your Python environment and libraries up to date to benefit from the latest security patches.\n\n### Source Code Fix Recommendation\n\nReplace the use of MD5 with a more secure hashing algorithm, such as SHA-256. Here is the updated code:\n\n```python\nimport hashlib\n\n# Original code\n# hash_contents = hashlib.md5(data_contents).hexdigest()\n\n# Updated code using SHA-256\nhash_contents = hashlib.sha256(data_contents).hexdigest()\n```\n\n### Library Dependencies\n\nTo execute the code example, the following library is required:\n\n- `hashlib`: This is a built-in library in Python, so no additional installation is necessary.\n\n### Relevant OWASP Resources\n\n- [OWASP Cryptographic Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html)\n- [OWASP Top Ten 2021](https://owasp.org/Top10/)\n\n### Common Weakness Enumeration (CWE)\n\n- [CWE-327: Use of a Broken or Risky Cryptographic Algorithm](https://cwe.mitre.org/data/definitions/327.html)"
+              },
+              "properties": {
+                "tags": [
+                  "B324"
+                ]
+              }
+            },
+            {
+              "id": "glog-5933ce76-c16e-4fa7-ba9b-51140eee18c9",
+              "help": {
+                "text": "",
+                "markdown": "### Description\n\nThe vulnerability associated with deserializing untrusted data using Python's `pickle` module arises from the fact that `pickle` can execute arbitrary code during the deserialization process. This means that if an attacker can control the input to `pickle.loads()`, they can potentially execute arbitrary code on the server, leading to severe security risks such as data breaches, system compromise, or denial of service.\n\n### General Mitigation Advice\n\n1. **Avoid Using `pickle` for Untrusted Data**: If possible, avoid using `pickle` to deserialize data from untrusted sources. Consider using safer alternatives like `json` or `yaml` for serialization and deserialization, as they do not allow code execution.\n\n2. **Use `pickle` in a Restricted Environment**: If you must use `pickle`, ensure that it is done in a highly restricted environment where the input is strictly controlled and sanitized.\n\n3. **Implement Input Validation**: Validate and sanitize all inputs before deserialization to ensure they conform to expected formats and types.\n\n4. **Use `pickle` Alternatives**: Consider using libraries like `dill` or `cloudpickle` with caution, as they also have similar risks. Always prefer safer serialization formats when possible.\n\n### Source Code Fix Recommendation\n\nTo mitigate the risk of deserializing untrusted data with `pickle`, replace the `pickle` module with a safer alternative like `json` if the data structure allows it. Here's an example fix:\n\n```python\nimport json\n\n# Assuming pickled_data is a JSON string instead of a pickled object\ndata = json.loads(pickled_data)\n```\n\n### Library Dependencies\n\nFor the above code example to execute properly, the following library is required:\n\n- `json` (Standard library, no external installation required)\n\n### Relevant Links\n\n- [OWASP Deserialization Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html)\n- [CWE-502: Deserialization of Untrusted Data](https://cwe.mitre.org/data/definitions/502.html)"
+              },
+              "properties": {
+                "tags": [
+                  "B301"
+                ]
+              }
+            },
+            {
+              "id": "glog-8f4cdc31-37ca-4438-b063-fa21ee2b8cf8",
+              "help": {
+                "text": "",
+                "markdown": "### Description\n\nThe vulnerability \"Utilization of Weak MD5 Hash for Security: Consider Setting usedforsecurity=False\" arises when the MD5 hashing algorithm is used for security purposes in Python applications. MD5 is considered cryptographically broken and unsuitable for further use due to its vulnerability to collision attacks, where two different inputs produce the same hash output. This can lead to security breaches, such as data integrity violations and unauthorized access.\n\n### General Mitigation Advice\n\nTo mitigate this vulnerability, it is recommended to use a more secure hashing algorithm, such as SHA-256, provided by the `hashlib` library. SHA-256 offers a higher level of security and is widely accepted for cryptographic purposes.\n\n### Source Code Fix Recommendation\n\nReplace the use of MD5 with SHA-256 in your Python code. Here is an example of how to update the code:\n\n```python\nimport hashlib\n\n# Original vulnerable code\n# h = hashlib.md5()\n\n# Updated secure code\nh = hashlib.sha256()\n```\n\n### Library Dependencies\n\nTo execute the code example properly, the following library is required:\n\n- `hashlib`: This is a built-in library in Python, so no additional installation is necessary.\n\n### Relevant OWASP Resources\n\n- [OWASP Cryptographic Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html)\n- [OWASP Top Ten 2021 - A02:2021-Cryptographic Failures](https://owasp.org/Top10/A02_2021-Cryptographic_Failures/)\n\n### Common Weakness Enumeration (CWE)\n\n- [CWE-327: Use of a Broken or Risky Cryptographic Algorithm](https://cwe.mitre.org/data/definitions/327.html)"
+              },
+              "properties": {
+                "tags": [
+                  "B324"
+                ]
+              }
+            },
+            {
+              "id": "glog-a6dcd412-9c8f-4899-8feb-f9c4eb34dbc9",
+              "help": {
+                "text": "",
+                "markdown": "### Description\n\nThe \"Potential Connectivity Across All Interfaces\" vulnerability occurs when a server is configured to listen on all network interfaces (`0.0.0.0`). This can expose the server to external networks, potentially allowing unauthorized access. In the context of Python's `http.server`, this means that the server could be accessed from any network interface, which might not be the intended behavior, especially if the server is meant to be accessed only locally.\n\n### General Mitigation Advice\n\nTo mitigate this vulnerability, configure the server to listen only on the specific network interfaces that are necessary for your application. If the server is intended to be accessed only locally, bind it to `127.0.0.1` (localhost) instead of `0.0.0.0`.\n\n### Source Code Fix Recommendation\n\nHere is a fixed version of the code that binds the server to `127.0.0.1`:\n\n```python\nimport http.server\nimport socketserver\n\n# Bind to localhost to restrict access to local machine only\nhost = \"127.0.0.1\"\nport = 8001\nhandler_class = http.server.SimpleHTTPRequestHandler\n\nwith socketserver.TCPServer((host, port), handler_class) as httpd:\n    print(f\"Serving on {host}:{port}\")\n    httpd.serve_forever()\n```\n\n### Library Dependencies\n\nThe code example requires the following standard library modules, which are included with Python and do not require additional installation:\n\n- `http.server`\n- `socketserver`\n\n### Relevant OWASP Resources\n\n- [OWASP Top Ten](https://owasp.org/www-project-top-ten/)\n- [OWASP Secure Coding Practices](https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/)\n\n### Common Weakness Enumeration (CWE)\n\n- [CWE-200: Exposure of Sensitive Information to an Unauthorized Actor](https://cwe.mitre.org/data/definitions/200.html)\n- [CWE-284: Improper Access Control](https://cwe.mitre.org/data/definitions/284.html)"
+              },
+              "properties": {
+                "tags": [
+                  "B104"
+                ]
+              }
+            }
+          ],
+          "language": "en-US",
+          "contents": [
+            "localizedData",
+            "nonLocalizedData"
+          ],
+          "isComprehensive": false
+        }
+      },
+      "language": "en-US",
+      "results": [
+        {
+          "ruleId": "glog-c1e9da57-1e05-48b3-9f80-e429cf0badce",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Possible binding to all interfaces."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "cognee/api/client.py"
+                },
+                "region": {
+                  "startLine": 178,
+                  "startColumn": 34,
+                  "endLine": 178,
+                  "endColumn": 43,
+                  "snippet": {
+                    "text": "def start_api_server(host: str = \"0.0.0.0\", port: int = 8000):\n"
+                  }
+                },
+                "contextRegion": {
+                  "startLine": 177,
+                  "endLine": 179,
+                  "snippet": {
+                    "text": "\ndef start_api_server(host: str = \"0.0.0.0\", port: int = 8000):\n    \"\"\"\n"
+                  }
+                }
+              }
+            }
+          ],
+          "properties": {
+            "issue_severity": "MEDIUM",
+            "issue_confidence": "MEDIUM"
+          }
+        },
+        {
+          "ruleId": "glog-88893d5e-579b-4794-b17e-02a5dba05246",
+          "kind": "fail",
+          "level": "error",
+          "message": {
+            "text": "subprocess call with shell=True identified, security issue."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "cognee/eval_framework/modal_eval_dashboard.py"
+                },
+                "region": {
+                  "startLine": 41,
+                  "startColumn": 5,
+                  "endLine": 41,
+                  "endColumn": 38,
+                  "snippet": {
+                    "text": "    subprocess.Popen(cmd, shell=True)\n"
+                  }
+                },
+                "contextRegion": {
+                  "startLine": 40,
+                  "endLine": 42,
+                  "snippet": {
+                    "text": "    )\n    subprocess.Popen(cmd, shell=True)\n\n"
+                  }
+                }
+              }
+            }
+          ],
+          "properties": {
+            "issue_severity": "HIGH",
+            "issue_confidence": "HIGH"
+          }
+        },
+        {
+          "ruleId": "glog-c1b48acc-b3c9-4ef7-96a9-f4e55ef7a33e",
+          "kind": "fail",
+          "level": "error",
+          "message": {
+            "text": "Use of weak MD5 hash for security. Consider usedforsecurity=False"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "cognee/api/v1/delete/delete.py"
+                },
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 12,
+                  "endLine": 23,
+                  "endColumn": 37,
+                  "snippet": {
+                    "text": "    return hashlib.md5(encoded_text).hexdigest()\n"
+                  }
+                },
+                "contextRegion": {
+                  "startLine": 22,
+                  "endLine": 24,
+                  "snippet": {
+                    "text": "    encoded_text = text.encode(\"utf-8\")\n    return hashlib.md5(encoded_text).hexdigest()\n\n"
+                  }
+                }
+              }
+            }
+          ],
+          "properties": {
+            "issue_severity": "HIGH",
+            "issue_confidence": "HIGH"
+          }
+        },
+        {
+          "ruleId": "glog-eb4f4bad-fafb-4271-a705-be6c4fc751ea",
+          "kind": "fail",
+          "level": "error",
+          "message": {
+            "text": "Use of weak MD5 hash for security. Consider usedforsecurity=False"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "cognee/modules/ingestion/save_data_to_file.py"
+                },
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 25,
+                  "endLine": 21,
+                  "endColumn": 51,
+                  "snippet": {
+                    "text": "        hash_contents = hashlib.md5(data_contents).hexdigest()\n"
+                  }
+                },
+                "contextRegion": {
+                  "startLine": 20,
+                  "endLine": 22,
+                  "snippet": {
+                    "text": "        data_contents = classified_data.get_data().encode(\"utf-8\")\n        hash_contents = hashlib.md5(data_contents).hexdigest()\n        file_metadata[\"name\"] = \"text_\" + hash_contents + \".txt\"\n"
+                  }
+                }
+              }
+            }
+          ],
+          "properties": {
+            "issue_severity": "HIGH",
+            "issue_confidence": "HIGH"
+          }
+        },
+        {
+          "ruleId": "glog-5933ce76-c16e-4fa7-ba9b-51140eee18c9",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Pickle and modules that wrap it can be unsafe when used to deserialize untrusted data, possible security issue."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "cognee/infrastructure/engine/models/DataPoint.py"
+                },
+                "region": {
+                  "startLine": 213,
+                  "startColumn": 16,
+                  "endLine": 213,
+                  "endColumn": 42,
+                  "snippet": {
+                    "text": "        data = pickle.loads(pickled_data)\n"
+                  }
+                },
+                "contextRegion": {
+                  "startLine": 212,
+                  "endLine": 214,
+                  "snippet": {
+                    "text": "        \"\"\"\n        data = pickle.loads(pickled_data)\n        return self(**data)\n"
+                  }
+                }
+              }
+            }
+          ],
+          "properties": {
+            "issue_severity": "MEDIUM",
+            "issue_confidence": "HIGH"
+          }
+        },
+        {
+          "ruleId": "glog-8f4cdc31-37ca-4438-b063-fa21ee2b8cf8",
+          "kind": "fail",
+          "level": "error",
+          "message": {
+            "text": "Use of weak MD5 hash for security. Consider usedforsecurity=False"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "cognee/shared/utils.py"
+                },
+                "region": {
+                  "startLine": 106,
+                  "startColumn": 9,
+                  "endLine": 106,
+                  "endColumn": 22,
+                  "snippet": {
+                    "text": "    h = hashlib.md5()\n"
+                  }
+                },
+                "contextRegion": {
+                  "startLine": 105,
+                  "endLine": 107,
+                  "snippet": {
+                    "text": "def get_file_content_hash(file_obj: Union[str, BinaryIO]) -> str:\n    h = hashlib.md5()\n\n"
+                  }
+                }
+              }
+            }
+          ],
+          "properties": {
+            "issue_severity": "HIGH",
+            "issue_confidence": "HIGH"
+          }
+        },
+        {
+          "ruleId": "glog-a6dcd412-9c8f-4899-8feb-f9c4eb34dbc9",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Possible binding to all interfaces."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "cognee/shared/utils.py"
+                },
+                "region": {
+                  "startLine": 323,
+                  "startColumn": 10,
+                  "endLine": 323,
+                  "endColumn": 19,
+                  "snippet": {
+                    "text": "    host=\"0.0.0.0\", port=8001, handler_class=http.server.SimpleHTTPRequestHandler\n"
+                  }
+                },
+                "contextRegion": {
+                  "startLine": 322,
+                  "endLine": 324,
+                  "snippet": {
+                    "text": "def start_visualization_server(\n    host=\"0.0.0.0\", port=8001, handler_class=http.server.SimpleHTTPRequestHandler\n):\n"
+                  }
+                }
+              }
+            }
+          ],
+          "properties": {
+            "issue_severity": "MEDIUM",
+            "issue_confidence": "MEDIUM"
+          }
+        }
+      ],
+      "newlineSequences": [
+        "\r\n",
+        "\n"
+      ]
+    }
+  ]
+}
